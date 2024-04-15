@@ -1,0 +1,5 @@
+# Ignore all object files
+obj/
+
+# Ignore executable
+eagle_userspace
