@@ -57,6 +57,18 @@ void read_sys_states(State* states, int num_states) {
             states[i].number = i;
             if (strcmp(entry->d_name, "name") == 0) {
                 read_attribute(attr_path, states[i].name, sizeof(states[i].name));
+            } else if (strcmp(entry->d_name, "residency") == 0) {
+                char value[100];
+                read_attribute(attr_path, value, sizeof(value));
+                states[i].residency = atoi(value);
+            } else if (strcmp(entry->d_name, "latency") == 0) {
+                char value[100];
+                read_attribute(attr_path, value, sizeof(value));
+                states[i].latency = atoi(value);
+            } else if (strcmp(entry->d_name, "usage") == 0) {
+                char value[100];
+                read_attribute(attr_path, value, sizeof(value));
+                states[i].usage = atoi(value);
             } else if (strcmp(entry->d_name, "below") == 0) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
@@ -65,14 +77,6 @@ void read_sys_states(State* states, int num_states) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
                 states[i].above = atoi(value);
-            } else if (strcmp(entry->d_name, "latency") == 0) {
-                char value[100];
-                read_attribute(attr_path, value, sizeof(value));
-                states[i].latency = atoi(value);
-            } else if (strcmp(entry->d_name, "residency") == 0) {
-                char value[100];
-                read_attribute(attr_path, value, sizeof(value));
-                states[i].residency = atoi(value);
             }
         }
         closedir(dir);

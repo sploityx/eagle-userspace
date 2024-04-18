@@ -10,12 +10,13 @@ typedef struct State {
     char name[MAX_NAME_LENGTH];
     int residency;
     int latency;
+    int usage;
     int below;
     int above;
 } State;
 
 State* create_state(int number, const char* name, int residency,
-                    int latency, int below, int above);
+                    int latency, int usage, int below, int above);
 void destroy_state(State* state);
 void print_state(State* state);
 void write_state(FILE *file, State* state);
