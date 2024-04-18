@@ -30,9 +30,9 @@ int read_attribute(const char *attr_path, char *value, size_t value_size) {
     return 0;
 }
 
-void read_sys_states(State* states[MAX_STATES]) {
-    char state_dir[50];
-    for (int i = 0; i < MAX_STATES; ++i) {
+void read_sys_states(State* states, int num_states) {
+    char state_dir[100];
+    for (int i = 0; i < num_states; ++i) {
         snprintf(state_dir, sizeof(state_dir), STATE_DIR "/state%d/", i);
 
         // Open the state directory
@@ -54,28 +54,26 @@ void read_sys_states(State* states[MAX_STATES]) {
             size_t remaining_space = sizeof(attr_path) - attr_path_len;
             strncat(attr_path, entry->d_name, remaining_space);
 
-            states[i]->number = i;
+            states[i].number = i;
             if (strcmp(entry->d_name, "name") == 0) {
-                read_attribute(attr_path, states[i]->name, sizeof(states[i]->name));
+                read_attribute(attr_path, states[i].name, sizeof(states[i].name));
             } else if (strcmp(entry->d_name, "below") == 0) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
-                states[i]->below = atoi(value);
+                states[i].below = atoi(value);
             } else if (strcmp(entry->d_name, "above") == 0) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
-                states[i]->above = atoi(value);
+                states[i].above = atoi(value);
             } else if (strcmp(entry->d_name, "latency") == 0) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
-                states[i]->latency = atoi(value);
+                states[i].latency = atoi(value);
             } else if (strcmp(entry->d_name, "residency") == 0) {
                 char value[100];
                 read_attribute(attr_path, value, sizeof(value));
-                states[i]->residency = atoi(value);
+                states[i].residency = atoi(value);
             }
-
-
         }
         closedir(dir);
     }

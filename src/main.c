@@ -5,22 +5,28 @@
 #include <stdlib.h>
 
 int main() {
-    int state_residency[MAX_STATES];
-    int state_count = 0;
-    State *states[MAX_STATES];
-    for (int i = 0; i < MAX_STATES; ++i) {
-        states[i] = malloc(sizeof(State));
+    State *states;
+
+    // TODO: write function to check amount of states in sysfs
+    // this is necessary, if ACPI is used or intel drivers would change
+    int num_states = 9;
+    states = malloc(num_states * sizeof(State));
+
+    if (states == NULL) {
+        fprintf(stderr, "Memory Allocation failed\n");
+        return 1;
     }
 
-    read_sys_states(states);
-    for (int i = 0; i < MAX_STATES; ++i) {
-        print_state(states[i]);
+    read_sys_states(states, num_states);
+    printf("Read the following C-State stats from sysfs:\n\n");
+    for (int i = 0; i < num_states; ++i) {
+        print_state(&states[i]);
     }
 
-
-    if (state_count > 0) {
-        if (write_to_proc_file(state_residency, state_count) == 0) {
+    if (num_states > 0) {
+        if (write_to_proc_file(states, num_states) == 0) {
             fprintf(stderr, "Something went wrong then writting.\n");
+            free(states);
             return 1;
         } else {
             printf("Write successful.\n");
@@ -29,9 +35,7 @@ int main() {
         printf("No cpuidle states found.\n");
     }
 
-    for (int i = 0; i < MAX_STATES; ++i) {
-        destroy_state(states[i]);
-    }
+    free(states);
 
     return 0;
 }

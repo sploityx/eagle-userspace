@@ -28,3 +28,10 @@ void print_state(State* state) {
            "Below: %d\nAbove: %d\n\n", state->number, state->name,
            state->residency, state->latency, state->below, state->above);
 }
+
+void write_state(FILE *file, State* state) {
+    fprintf(file, "State\nNumber: %d\nName: %s\nResidency: %d\nLatency: %d\n"
+                        "Below: %d\nAbove: %d\n\n",
+                        state->number, state->name, state->residency,
+                        state->latency, state->below, state->above);
+}
