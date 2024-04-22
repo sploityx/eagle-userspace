@@ -26,6 +26,11 @@ void destroy_state(State* state) {
 }
 
 void print_state(State* state) {
+    if (state == NULL) {
+        fprintf(stderr, "Error: State pointer is NULL.\n");
+        return;
+    }
+
     printf("State\nNumber: %d\nName: %s\nResidency: %d\nLatency: %d\n"
            "Usage: %d\nBelow: %d\nAbove: %d\nCorrection: %d\n\n", state->number,
            state->name, state->residency, state->latency, state->usage,
@@ -33,6 +38,15 @@ void print_state(State* state) {
 }
 
 void write_state(FILE *file, State* state) {
+    if (file == NULL) {
+        fprintf(stderr, "Error: File pointer is NULL.\n");
+        return;
+    }
+    if (state == NULL) {
+        fprintf(stderr, "Error: State pointer is NULL.\n");
+        return;
+    }
+
     fprintf(file, "State\nNumber: %d\nName: %s\nResidency: %d\nLatency: %d\n"
                     "Usage: %d\nBelow: %d\nAbove: %d\nCorrection: %d\n\n",
                     state->number, state->name, state->residency,
@@ -41,6 +55,11 @@ void write_state(FILE *file, State* state) {
 }
 
 void calc_state(State* state) {
+    if (state == NULL) {
+        fprintf(stderr, "Error: State pointer is NULL.\n");
+        return;
+    }
+
     if (state->usage == 0) {
         state->correction = state->residency;
     } else {
@@ -49,8 +68,3 @@ void calc_state(State* state) {
                                                 state->residency) / 100.0);
     }
 }
-
-// callbacks
-// minuten takt auch kein problem
-// sysfs angucken
-// --cpu kann man auch skylake angeben

@@ -13,7 +13,7 @@ int main() {
     states = malloc(num_states * sizeof(State));
 
     if (states == NULL) {
-        fprintf(stderr, "Memory Allocation failed\n");
+        perror("Error: Memory Allocation failed.");
         return 1;
     }
 
@@ -25,11 +25,11 @@ int main() {
 
     if (num_states > 0) {
         if (write_to_proc_file(states, num_states) == 0) {
-            fprintf(stderr, "Something went wrong then writting.\n");
+            fprintf(stderr, "Error: Writing states to file.\n");
             free(states);
             return 1;
         } else {
-            printf("Write successful.\n");
+            printf("Writing states successful.\n");
         }
     } else {
         printf("No cpuidle states found.\n");
