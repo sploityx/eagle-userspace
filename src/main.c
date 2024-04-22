@@ -18,8 +18,8 @@ int main() {
     }
 
     read_sys_states(states, num_states);
-    printf("Read the following C-State stats from sysfs:\n\n");
     for (int i = 0; i < num_states; ++i) {
+        calc_state(&states[i]);
         print_state(&states[i]);
     }
 
@@ -36,6 +36,5 @@ int main() {
     }
 
     free(states);
-
     return 0;
 }

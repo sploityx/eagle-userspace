@@ -17,6 +17,7 @@ State* create_state(int number, const char* name, int residency,
     state->usage = usage;
     state->below = below;
     state->above = above;
+    state->correction = 0;
     return state;
 }
 
@@ -26,14 +27,30 @@ void destroy_state(State* state) {
 
 void print_state(State* state) {
     printf("State\nNumber: %d\nName: %s\nResidency: %d\nLatency: %d\n"
-           "Usage: %d\nBelow: %d\nAbove: %d\n\n", state->number, state->name,
-           state->residency, state->latency, state->usage, state->below,
-           state->above);
+           "Usage: %d\nBelow: %d\nAbove: %d\nCorrection: %d\n\n", state->number,
+           state->name, state->residency, state->latency, state->usage,
+           state->below, state->above, state->correction);
 }
 
 void write_state(FILE *file, State* state) {
     fprintf(file, "State\nNumber: %d\nName: %s\nResidency: %d\nLatency: %d\n"
-                        "Usage: %d\nBelow: %d\nAbove: %d\n\n",
-                        state->number, state->name, state->residency,
-                        state->latency, state->usage, state->below, state->above);
+                    "Usage: %d\nBelow: %d\nAbove: %d\nCorrection: %d\n\n",
+                    state->number, state->name, state->residency,
+                    state->latency, state->usage, state->below, state->above,
+                    state->correction);
 }
+
+void calc_state(State* state) {
+    if (state->usage == 0) {
+        state->correction = state->residency;
+    } else {
+        float above_perc = ((float)state->above * 100.0) / state->usage;
+        state->correction = state->residency + ((100.0 + above_perc *
+                                                state->residency) / 100.0);
+    }
+}
+
+// callbacks
+// minuten takt auch kein problem
+// sysfs angucken
+// --cpu kann man auch skylake angeben

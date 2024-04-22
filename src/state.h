@@ -13,6 +13,7 @@ typedef struct State {
     int usage;
     int below;
     int above;
+    int correction;
 } State;
 
 State* create_state(int number, const char* name, int residency,
@@ -20,5 +21,6 @@ State* create_state(int number, const char* name, int residency,
 void destroy_state(State* state);
 void print_state(State* state);
 void write_state(FILE *file, State* state);
+void calc_state(State* state);
 
 #endif // STATE_H_
