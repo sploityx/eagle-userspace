@@ -59,12 +59,19 @@ void calc_state(State* state) {
         fprintf(stderr, "Error: State pointer is NULL.\n");
         return;
     }
+    if (state->residency == 0) {
+        state->correction = 0;
+        return;
+    }
 
     if (state->usage == 0) {
         state->correction = state->residency;
     } else {
         float above_perc = ((float)state->above * 100.0) / state->usage;
-        state->correction = state->residency + ((100.0 + above_perc *
-                                                state->residency) / 100.0);
+        float below_perc = ((float)state->below * 100.0) / state->usage;
+        float corr_perc;
+        corr_perc = (above_perc > below_perc) ? above_perc-below_perc : 0.0;
+        state->correction = state->residency +
+            ((100.0 + corr_perc * state->residency) / 100.0);
     }
 }
